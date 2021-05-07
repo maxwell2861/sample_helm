@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.service.name | quote }}
+  namespace: beta
+  labels:
+    app: {{ .Values.service.name | quote }}
+spec:
+  replicas: {{.Values.service.replicaCount}}
+  selector:
+    matchLabels:
+      app: {{ .Values.service.name | quote }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.service.name | quote }} 
+    spec:
+     containers:
+        - name: "{{ .Values.service.name }}-{{ .Chart.AppVersion }}"
+          image: "{{ .Values.image.registry }}/{{ .Values.service.name }}:{{ .Chart.AppVersion }}"
+          env:
+          - name: env
+            value: beta
+     imagePullSecrets:
+         - name: {{ .Values.image.imagePullSecrets }}

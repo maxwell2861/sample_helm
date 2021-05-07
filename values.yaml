@@ -1,0 +1,19 @@
+
+
+#---------------------------------
+# Service maxwell
+#---------------------------------
+image:
+  registry: docker.lezhin.com
+  imagePullSecrets: docker
+
+service:
+    name: maxwell-test
+    replicaCount: 1
+    type: NodePort
+    port: 8080
+
+other-service:
+  dessert: ice cream
+other-service2:
+  dessert: zero cola
